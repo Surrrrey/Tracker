@@ -1,0 +1,41 @@
+import UIKit
+
+final class TabBarController: UITabBarController {
+    
+    let trackersImage = UIImage(systemName: "record.circle.fill")
+    let statisticImage = UIImage(systemName: "hare.fill")
+    
+    
+    override func viewDidLoad() {
+        super.viewDidLoad()
+        
+        configTabBar()
+    }
+    
+    private func configTabBar() {
+        let appearance = UITabBarAppearance()
+        appearance.configureWithOpaqueBackground()
+        appearance.backgroundColor = .whiteDay
+        
+        tabBar.standardAppearance = appearance
+        tabBar.scrollEdgeAppearance = appearance
+        
+        tabBar.isTranslucent = false
+        
+        tabBar.backgroundColor = .whiteDay
+        tabBar.tintColor = .ypBlue
+        
+        let trackersVC = TrackersViewController()
+        let statisticVC = StatisticViewController()
+        
+        trackersVC.tabBarItem = UITabBarItem(title: nil,
+                                             image: trackersImage?.withTintColor(.ypGray).withRenderingMode(.alwaysOriginal),
+                                             selectedImage: trackersImage)
+        
+        statisticVC.tabBarItem = UITabBarItem(title: nil,
+                                              image: statisticImage?.withTintColor(.ypGray).withRenderingMode(.alwaysOriginal),
+                                              selectedImage: statisticImage)
+
+        self.viewControllers = [trackersVC, statisticVC]
+    }
+}

@@ -6,6 +6,17 @@
 	objectVersion = 77;
 	objects = {
 
+/* Begin PBXBuildFile section */
+		575CB876308F9F8A00A0F024 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 575CB86B308F9F8A00A0F024 /* Assets.xcassets */; };
+		575CB878308F9F8A00A0F024 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 575CB86E308F9F8A00A0F024 /* LaunchScreen.storyboard */; };
+		575CB87A308F9F8A00A0F024 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 575CB86A308F9F8A00A0F024 /* AppDelegate.swift */; };
+		575CB87B308F9F8A00A0F024 /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 575CB871308F9F8A00A0F024 /* SceneDelegate.swift */; };
+		575CB87C308F9F8A00A0F024 /* Tracker.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = 575CB872308F9F8A00A0F024 /* Tracker.xcdatamodeld */; };
+		575CB87D308F9F8A00A0F024 /* TrackersVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 575CB873308F9F8A00A0F024 /* TrackersVC.swift */; };
+		575CB88B308FAD4900A0F024 /* TabBarController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 575CB88A308FAD4500A0F024 /* TabBarController.swift */; };
+		575CB88F308FB09F00A0F024 /* StatisticVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 575CB88E308FB09700A0F024 /* StatisticVC.swift */; };
+/* End PBXBuildFile section */
+
 /* Begin PBXContainerItemProxy section */
 		575CB834308E5FF400A0F024 /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
@@ -27,27 +38,18 @@
 		575CB81A308E5FF200A0F024 /* Tracker.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Tracker.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		575CB833308E5FF400A0F024 /* TrackerTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = TrackerTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		575CB83D308E5FF400A0F024 /* TrackerUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = TrackerUITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
+		575CB86A308F9F8A00A0F024 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
+		575CB86B308F9F8A00A0F024 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
+		575CB86C308F9F8A00A0F024 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		575CB86D308F9F8A00A0F024 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
+		575CB871308F9F8A00A0F024 /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
+		575CB873308F9F8A00A0F024 /* TrackersVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TrackersVC.swift; sourceTree = "<group>"; };
+		575CB875308F9F8A00A0F024 /* Tracker.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = Tracker.xcdatamodel; sourceTree = "<group>"; };
+		575CB88A308FAD4500A0F024 /* TabBarController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TabBarController.swift; sourceTree = "<group>"; };
+		575CB88E308FB09700A0F024 /* StatisticVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StatisticVC.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
-/* Begin PBXFileSystemSynchronizedBuildFileExceptionSet section */
-		575CB845308E5FF400A0F024 /* Exceptions for "Tracker" folder in "Tracker" target */ = {
-			isa = PBXFileSystemSynchronizedBuildFileExceptionSet;
-			membershipExceptions = (
-				Info.plist,
-			);
-			target = 575CB819308E5FF200A0F024 /* Tracker */;
-		};
-/* End PBXFileSystemSynchronizedBuildFileExceptionSet section */
-
 /* Begin PBXFileSystemSynchronizedRootGroup section */
-		575CB81C308E5FF200A0F024 /* Tracker */ = {
-			isa = PBXFileSystemSynchronizedRootGroup;
-			exceptions = (
-				575CB845308E5FF400A0F024 /* Exceptions for "Tracker" folder in "Tracker" target */,
-			);
-			path = Tracker;
-			sourceTree = "<group>";
-		};
 		575CB836308E5FF400A0F024 /* TrackerTests */ = {
 			isa = PBXFileSystemSynchronizedRootGroup;
 			path = TrackerTests;
@@ -88,7 +90,7 @@
 		575CB811308E5FF200A0F024 = {
 			isa = PBXGroup;
 			children = (
-				575CB81C308E5FF200A0F024 /* Tracker */,
+				575CB874308F9F8A00A0F024 /* Tracker */,
 				575CB836308E5FF400A0F024 /* TrackerTests */,
 				575CB840308E5FF400A0F024 /* TrackerUITests */,
 				575CB81B308E5FF200A0F024 /* Products */,
@@ -105,6 +107,54 @@
 			name = Products;
 			sourceTree = "<group>";
 		};
+		575CB874308F9F8A00A0F024 /* Tracker */ = {
+			isa = PBXGroup;
+			children = (
+				575CB87E308FAC5900A0F024 /* Presentation */,
+				575CB86A308F9F8A00A0F024 /* AppDelegate.swift */,
+				575CB86B308F9F8A00A0F024 /* Assets.xcassets */,
+				575CB86C308F9F8A00A0F024 /* Info.plist */,
+				575CB86E308F9F8A00A0F024 /* LaunchScreen.storyboard */,
+				575CB871308F9F8A00A0F024 /* SceneDelegate.swift */,
+				575CB872308F9F8A00A0F024 /* Tracker.xcdatamodeld */,
+			);
+			path = Tracker;
+			sourceTree = "<group>";
+		};
+		575CB87E308FAC5900A0F024 /* Presentation */ = {
+			isa = PBXGroup;
+			children = (
+				575CB87F308FAC6300A0F024 /* TabBar */,
+				575CB88C308FB07A00A0F024 /* Trackers */,
+				575CB88D308FB08800A0F024 /* Statistic */,
+			);
+			path = Presentation;
+			sourceTree = "<group>";
+		};
+		575CB87F308FAC6300A0F024 /* TabBar */ = {
+			isa = PBXGroup;
+			children = (
+				575CB88A308FAD4500A0F024 /* TabBarController.swift */,
+			);
+			path = TabBar;
+			sourceTree = "<group>";
+		};
+		575CB88C308FB07A00A0F024 /* Trackers */ = {
+			isa = PBXGroup;
+			children = (
+				575CB873308F9F8A00A0F024 /* TrackersVC.swift */,
+			);
+			path = Trackers;
+			sourceTree = "<group>";
+		};
+		575CB88D308FB08800A0F024 /* Statistic */ = {
+			isa = PBXGroup;
+			children = (
+				575CB88E308FB09700A0F024 /* StatisticVC.swift */,
+			);
+			path = Statistic;
+			sourceTree = "<group>";
+		};
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
@@ -119,9 +169,6 @@
 			buildRules = (
 			);
 			dependencies = (
-			);
-			fileSystemSynchronizedGroups = (
-				575CB81C308E5FF200A0F024 /* Tracker */,
 			);
 			name = Tracker;
 			packageProductDependencies = (
@@ -225,6 +272,8 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				575CB876308F9F8A00A0F024 /* Assets.xcassets in Resources */,
+				575CB878308F9F8A00A0F024 /* LaunchScreen.storyboard in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -249,6 +298,12 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				575CB87A308F9F8A00A0F024 /* AppDelegate.swift in Sources */,
+				575CB87B308F9F8A00A0F024 /* SceneDelegate.swift in Sources */,
+				575CB87C308F9F8A00A0F024 /* Tracker.xcdatamodeld in Sources */,
+				575CB88F308FB09F00A0F024 /* StatisticVC.swift in Sources */,
+				575CB88B308FAD4900A0F024 /* TabBarController.swift in Sources */,
+				575CB87D308F9F8A00A0F024 /* TrackersVC.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -281,6 +336,17 @@
 		};
 /* End PBXTargetDependency section */
 
+/* Begin PBXVariantGroup section */
+		575CB86E308F9F8A00A0F024 /* LaunchScreen.storyboard */ = {
+			isa = PBXVariantGroup;
+			children = (
+				575CB86D308F9F8A00A0F024 /* Base */,
+			);
+			name = LaunchScreen.storyboard;
+			sourceTree = "<group>";
+		};
+/* End PBXVariantGroup section */
+
 /* Begin XCBuildConfiguration section */
 		575CB847308E5FF400A0F024 /* Debug */ = {
 			isa = XCBuildConfiguration;
@@ -294,7 +360,6 @@
 				INFOPLIST_FILE = Tracker/Info.plist;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchStoryboardName = LaunchScreen;
-				INFOPLIST_KEY_UIMainStoryboardFile = Main;
 				INFOPLIST_KEY_UISupportedInterfaceOrientations = UIInterfaceOrientationPortrait;
 				IPHONEOS_DEPLOYMENT_TARGET = 17.0;
 				LD_RUNPATH_SEARCH_PATHS = (
@@ -330,7 +395,6 @@
 				INFOPLIST_FILE = Tracker/Info.plist;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchStoryboardName = LaunchScreen;
-				INFOPLIST_KEY_UIMainStoryboardFile = Main;
 				INFOPLIST_KEY_UISupportedInterfaceOrientations = UIInterfaceOrientationPortrait;
 				IPHONEOS_DEPLOYMENT_TARGET = 17.0;
 				LD_RUNPATH_SEARCH_PATHS = (
@@ -617,6 +681,19 @@
 			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
+
+/* Begin XCVersionGroup section */
+		575CB872308F9F8A00A0F024 /* Tracker.xcdatamodeld */ = {
+			isa = XCVersionGroup;
+			children = (
+				575CB875308F9F8A00A0F024 /* Tracker.xcdatamodel */,
+			);
+			currentVersion = 575CB875308F9F8A00A0F024 /* Tracker.xcdatamodel */;
+			path = Tracker.xcdatamodeld;
+			sourceTree = "<group>";
+			versionGroupType = wrapper.xcdatamodel;
+		};
+/* End XCVersionGroup section */
 	};
 	rootObject = 575CB812308E5FF200A0F024 /* Project object */;
 }
