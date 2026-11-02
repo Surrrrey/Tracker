@@ -6,9 +6,9 @@ final class TrackersViewController: UIViewController {
     
     private let backgroundColor = UIColor(resource: .whiteDay)
     
-    private let plusButton = UIButton()
-    private let plusButtonImage = UIImage(systemName: "plus")?.withTintColor(.blackDay)
-    private let plusButtonSize = CGSize(width: 42, height: 42)
+    private let addNewTaskButton = UIButton()
+    private let newTaskButtonImage = UIImage(systemName: "plus")?.withTintColor(.blackDay)
+    private let newTaskButtonSize = CGSize(width: 42, height: 42)
     
     private let titleLabel = UILabel()
     private let titleText = "Трекеры"
@@ -47,8 +47,9 @@ final class TrackersViewController: UIViewController {
         return formatter
     }()
     
-    private var activeTrackers = 0
+    private var categories: [TrackerCategory] = []
     
+    private var completedTrackers: [TrackerRecord] = []
     //MARK: - Lifecycle
     
     override func viewDidLoad() {
@@ -61,6 +62,21 @@ final class TrackersViewController: UIViewController {
     
     //MARK: - Private Methods
     
+    private func addNewTaskButtonDidTap() {
+        let createdNewTrackerVC = CreatedNewTrackerVC()
+        
+        ViewControllerSwitcher.shared.presentNavigationControllerForCreatedNewTracker(from: self, createdNewTrackerVC)
+    }
+    
+    
+    private func trackerCompletedButtonDidTap(for tracker: Tracker) {
+        // TODO:
+        if let index = self.completedTrackers.firstIndex(where: { $0.TrackerId == tracker.id }) {
+            completedTrackers.remove(at: index)
+        } else {
+            completedTrackers.append(TrackerRecord(TrackerId: tracker.id, date: Date()))
+        }
+    }
 }
 
 //MARK: - Layout
@@ -70,29 +86,33 @@ extension TrackersViewController {
     private func configViews() {
         view.backgroundColor = backgroundColor
         
-        configPlusButton()
+        configAddNewTaskButton()
         configDateLabel()
         configDateBackground()
         configTitleLabel()
         configSearchField()
         
-        guard activeTrackers == 0 else { return }
+        guard categories.isEmpty else { return }
         configEmptyImage()
         configEmptyLabel()
     }
     
-    private func configPlusButton() {
-        plusButton.setImage(plusButtonImage, for: .normal)
-        plusButton.tintColor = .blackDay
-        plusButton.translatesAutoresizingMaskIntoConstraints = false
+    private func configAddNewTaskButton() {
+        addNewTaskButton.setImage(newTaskButtonImage, for: .normal)
+        addNewTaskButton.tintColor = .blackDay
+        addNewTaskButton.addAction(UIAction { [weak self] _ in
+            self?.addNewTaskButtonDidTap()
+        }, for: .touchUpInside)
         
-        view.addSubview(plusButton)
+        addNewTaskButton.translatesAutoresizingMaskIntoConstraints = false
+        
+        view.addSubview(addNewTaskButton)
         
         NSLayoutConstraint.activate([
-            plusButton.leadingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.leadingAnchor, constant: 6),
-            plusButton.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor, constant: 1),
-            plusButton.widthAnchor.constraint(equalToConstant: plusButtonSize.width),
-            plusButton.heightAnchor.constraint(equalToConstant: plusButtonSize.height)
+            addNewTaskButton.leadingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.leadingAnchor, constant: 6),
+            addNewTaskButton.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor, constant: 1),
+            addNewTaskButton.widthAnchor.constraint(equalToConstant: newTaskButtonSize.width),
+            addNewTaskButton.heightAnchor.constraint(equalToConstant: newTaskButtonSize.height)
         ])
     }
     
@@ -105,7 +125,7 @@ extension TrackersViewController {
         view.addSubview(dateLabel)
         
         NSLayoutConstraint.activate([
-            dateLabel.centerYAnchor.constraint(equalTo: plusButton.centerYAnchor),
+            dateLabel.centerYAnchor.constraint(equalTo: addNewTaskButton.centerYAnchor),
             dateLabel.trailingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.trailingAnchor, constant: -16)
         ])
     }
@@ -137,7 +157,7 @@ extension TrackersViewController {
         
         NSLayoutConstraint.activate([
             titleLabel.leadingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.leadingAnchor, constant: 16),
-            titleLabel.topAnchor.constraint(equalTo: plusButton.bottomAnchor, constant: 1)
+            titleLabel.topAnchor.constraint(equalTo: addNewTaskButton.bottomAnchor, constant: 1)
         ])
     }
     
