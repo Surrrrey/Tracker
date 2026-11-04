@@ -10,6 +10,11 @@ final class TrackersViewController: UIViewController {
     private let newTaskButtonImage = UIImage(systemName: "plus")?.withTintColor(.blackDay)
     private let newTaskButtonSize = CGSize(width: 42, height: 42)
     
+    private let datePicker = UIDatePicker()
+    private let datePickerMode = UIDatePicker.Mode.date
+    private let datePickerPreferredStyle = UIDatePickerStyle.compact
+    private let datePickerBackgroundColor = UIColor(resource: .ypLightGray)
+    
     private let titleLabel = UILabel()
     private let titleText = "Трекеры"
     private let titleFont = UIFont.systemFont(ofSize: 34, weight: .bold)
@@ -19,7 +24,6 @@ final class TrackersViewController: UIViewController {
     private let dateTextColor = UIColor(resource: .blackDay)
     
     private let dateBackgroundView = UIImageView()
-    private let dateBackgroundColor = UIColor(resource: .ypLightGray)
     
     private let searchField = UISearchTextField()
     private let searchFieldPlaceholder = "Поиск"
@@ -37,15 +41,6 @@ final class TrackersViewController: UIViewController {
     
     
     //MARK: - Properties
-    
-    static var dateFormatter: DateFormatter = {
-        let formatter = DateFormatter()
-        formatter.dateStyle = .short
-        formatter.timeStyle = .none
-        formatter.dateFormat = "dd.MM.yy"
-        formatter.locale = Locale(identifier: "ru_RU")
-        return formatter
-    }()
     
     private var categories: [TrackerCategory] = []
     
@@ -86,9 +81,7 @@ extension TrackersViewController {
     private func configViews() {
         view.backgroundColor = backgroundColor
         
-        configAddNewTaskButton()
-        configDateLabel()
-        configDateBackground()
+        configNavigationBar()
         configTitleLabel()
         configSearchField()
         
@@ -97,54 +90,42 @@ extension TrackersViewController {
         configEmptyLabel()
     }
     
+    private func configNavigationBar() {
+        configDatePicker()
+        configAddNewTaskButton()
+        
+        navigationController?.isNavigationBarHidden = false
+        
+        navigationItem.rightBarButtonItem = UIBarButtonItem(customView: datePicker)
+        navigationItem.leftBarButtonItem = UIBarButtonItem(customView: addNewTaskButton)
+        if #available(iOS 26.0, *) {
+            navigationItem.leftBarButtonItem?.hidesSharedBackground = true
+            navigationItem.rightBarButtonItem?.hidesSharedBackground = true
+        }
+    }
+    
     private func configAddNewTaskButton() {
         addNewTaskButton.setImage(newTaskButtonImage, for: .normal)
         addNewTaskButton.tintColor = .blackDay
+        
         addNewTaskButton.addAction(UIAction { [weak self] _ in
             self?.addNewTaskButtonDidTap()
         }, for: .touchUpInside)
         
-        addNewTaskButton.translatesAutoresizingMaskIntoConstraints = false
-        
-        view.addSubview(addNewTaskButton)
-        
         NSLayoutConstraint.activate([
-            addNewTaskButton.leadingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.leadingAnchor, constant: 6),
-            addNewTaskButton.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor, constant: 1),
             addNewTaskButton.widthAnchor.constraint(equalToConstant: newTaskButtonSize.width),
             addNewTaskButton.heightAnchor.constraint(equalToConstant: newTaskButtonSize.height)
         ])
     }
     
-    private func configDateLabel() {
-        dateLabel.text = TrackersViewController.dateFormatter.string(from: Date())
-        dateLabel.font = dateFont
-        dateLabel.textColor = dateTextColor
-        dateLabel.translatesAutoresizingMaskIntoConstraints = false
+    private func configDatePicker() {
+        datePicker.datePickerMode = datePickerMode
+        datePicker.preferredDatePickerStyle = datePickerPreferredStyle
         
-        view.addSubview(dateLabel)
+        datePicker.translatesAutoresizingMaskIntoConstraints = false
         
         NSLayoutConstraint.activate([
-            dateLabel.centerYAnchor.constraint(equalTo: addNewTaskButton.centerYAnchor),
-            dateLabel.trailingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.trailingAnchor, constant: -16)
-        ])
-    }
-    
-    private func configDateBackground() {
-        dateBackgroundView.backgroundColor = .ypLightGray
-        dateBackgroundView.layer.cornerRadius = 8
-        dateBackgroundView.clipsToBounds = true
-        dateBackgroundView.translatesAutoresizingMaskIntoConstraints = false
-        
-        guard dateLabel.superview == view else { return }
-        
-        view.insertSubview(dateBackgroundView, belowSubview: dateLabel)
-        
-        NSLayoutConstraint.activate([
-            dateBackgroundView.leadingAnchor.constraint(equalTo: dateLabel.leadingAnchor, constant: -5.5),
-            dateBackgroundView.trailingAnchor.constraint(equalTo: dateLabel.trailingAnchor, constant: 5.5),
-            dateBackgroundView.topAnchor.constraint(equalTo: dateLabel.topAnchor, constant: -6),
-            dateBackgroundView.bottomAnchor.constraint(equalTo: dateLabel.bottomAnchor, constant: 6)
+            datePicker.widthAnchor.constraint(equalToConstant: 100)
         ])
     }
     
@@ -157,7 +138,7 @@ extension TrackersViewController {
         
         NSLayoutConstraint.activate([
             titleLabel.leadingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.leadingAnchor, constant: 16),
-            titleLabel.topAnchor.constraint(equalTo: addNewTaskButton.bottomAnchor, constant: 1)
+            titleLabel.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor, constant: 1)
         ])
     }
     

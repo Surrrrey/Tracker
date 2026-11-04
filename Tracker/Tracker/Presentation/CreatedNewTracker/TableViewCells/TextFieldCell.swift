@@ -46,6 +46,7 @@ extension TextFieldCell {
         
     private func configTextField() {
         textField.backgroundColor = .clear
+        textField.clearButtonMode = .whileEditing
         textField.placeholder = textFieldPlaceholder
         
         textField.translatesAutoresizingMaskIntoConstraints = false
@@ -55,8 +56,8 @@ extension TextFieldCell {
         NSLayoutConstraint.activate([
             textField.topAnchor.constraint(equalTo: contentView.topAnchor),
             textField.bottomAnchor.constraint(equalTo: contentView.bottomAnchor),
-            textField.leadingAnchor.constraint(equalTo: contentView.leadingAnchor, constant: 16)
-            
+            textField.leadingAnchor.constraint(equalTo: contentView.leadingAnchor, constant: 16),
+            textField.trailingAnchor.constraint(equalTo: contentView.trailingAnchor, constant: -10)
         ])
     }
     

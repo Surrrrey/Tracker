@@ -4,21 +4,28 @@ final class CreatedNewTrackerVC: UIViewController {
     
     //MARK: - Layout Properties
     
-    let mainTitleText = "Новая привычка"
+    private let mainTitleText = "Новая привычка"
     
     private let textFieldTableView = UITableView(frame: .zero, style: .plain)
-    private let textFieldPlaceholder = "Введите название трекера"
     
     private let tableViewCellHeight = 75.0
-    private let tableViewCornerRadius = 16.0
+    private let cornerRadius = 16.0
     
     private let settingsTableView = UITableView(frame: .zero, style: .plain)
     
     private let backgroundColor = UIColor(resource: .whiteDay)
     
+    private let stackView = UIStackView()
+    private let stackViewHeight = 60.0
+    
     private let cancelButton = UIButton()
+    private let cancelButtonColor = UIColor(resource: .ypRed)
+    private let borderWidth = 1.0
     
     private let createButton = UIButton()
+    private let createButtonColor = UIColor(resource: .whiteDay)
+    private let createButtonDisabledColor = UIColor(resource: .ypGray)
+
     
     //MARK: - Properties
     
@@ -84,8 +91,7 @@ extension CreatedNewTrackerVC {
         configMainTitle()
         configTextFieldTableView()
         configSettingsTableView()
-        configCancelButton()
-        configCreateButton()
+        configStackView()
     }
     
     private func configMainTitle() {
@@ -96,7 +102,7 @@ extension CreatedNewTrackerVC {
     private func configTextFieldTableView() {
         textFieldTableView.separatorStyle = .none
         textFieldTableView.backgroundColor = .clear
-        textFieldTableView.layer.cornerRadius = tableViewCornerRadius
+        textFieldTableView.layer.cornerRadius = cornerRadius
         textFieldTableView.layer.masksToBounds = true
         
         textFieldTableView.translatesAutoresizingMaskIntoConstraints = false
@@ -118,7 +124,7 @@ extension CreatedNewTrackerVC {
     private func configSettingsTableView() {
         settingsTableView.separatorStyle = .singleLine
         settingsTableView.backgroundColor = .none
-        settingsTableView.layer.cornerRadius = tableViewCornerRadius
+        settingsTableView.layer.cornerRadius = cornerRadius
         settingsTableView.layer.masksToBounds = true
         
         settingsTableView.translatesAutoresizingMaskIntoConstraints = false
@@ -137,11 +143,50 @@ extension CreatedNewTrackerVC {
         settingsTableView.dataSource = self
     }
     
-    private func configCancelButton() {
+    private func configStackView() {
+        stackView.spacing = 8
+        stackView.axis = .horizontal
+        stackView.distribution = .fillEqually
+        stackView.alignment = .fill
         
+        stackView.translatesAutoresizingMaskIntoConstraints = false
+        
+        configCancelButton()
+        configCreateButton()
+        
+        view.addSubview(stackView)
+        
+        stackView.addArrangedSubview(cancelButton)
+        stackView.addArrangedSubview(createButton)
+        
+        NSLayoutConstraint.activate([
+            stackView.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 20),
+            stackView.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -20),
+            stackView.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor),
+            stackView.heightAnchor.constraint(equalToConstant: stackViewHeight)
+        ])
+    }
+    
+    private func configCancelButton() {
+        cancelButton.setTitle("Отменить", for: .normal)
+        cancelButton.setTitleColor(cancelButtonColor, for: .normal)
+        cancelButton.layer.cornerRadius = cornerRadius
+        cancelButton.layer.masksToBounds = true
+        cancelButton.backgroundColor = backgroundColor
+        cancelButton.layer.borderColor = cancelButtonColor.cgColor
+        cancelButton.layer.borderWidth = borderWidth
+        
+        cancelButton.translatesAutoresizingMaskIntoConstraints = false
     }
     
     private func configCreateButton() {
+        createButton.isEnabled = false
+        createButton.setTitle("Создать", for: .normal)
+        createButton.setTitleColor(createButtonColor, for: .normal)
+        createButton.layer.cornerRadius = cornerRadius
+        createButton.layer.masksToBounds = true
+        createButton.backgroundColor = createButtonDisabledColor
         
+        createButton.translatesAutoresizingMaskIntoConstraints = false
     }
 }

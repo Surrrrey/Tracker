@@ -26,9 +26,10 @@ final class TabBarController: UITabBarController {
         tabBar.tintColor = .ypBlue
         
         let trackersVC = TrackersViewController()
+        let navC = UINavigationController(rootViewController: trackersVC)
         let statisticVC = StatisticViewController()
         
-        trackersVC.tabBarItem = UITabBarItem(title: nil,
+        navC.tabBarItem = UITabBarItem(title: nil,
                                              image: trackersImage?.withTintColor(.ypGray).withRenderingMode(.alwaysOriginal),
                                              selectedImage: trackersImage)
         
@@ -36,6 +37,6 @@ final class TabBarController: UITabBarController {
                                               image: statisticImage?.withTintColor(.ypGray).withRenderingMode(.alwaysOriginal),
                                               selectedImage: statisticImage)
 
-        self.viewControllers = [trackersVC, statisticVC]
+        self.viewControllers = [navC, statisticVC]
     }
 }

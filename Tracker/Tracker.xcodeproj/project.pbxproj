@@ -24,6 +24,7 @@
 		57CE4A463097693700B96C4C /* CreatedNewTrackerVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 57CE4A453097692100B96C4C /* CreatedNewTrackerVC.swift */; };
 		57CE4A4A309781C000B96C4C /* TextFieldCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 57CE4A493097819E00B96C4C /* TextFieldCell.swift */; };
 		57CE4A4C3097823400B96C4C /* SettingsCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 57CE4A4B309781C400B96C4C /* SettingsCell.swift */; };
+		57CE4A6A309B26A200B96C4C /* DateFormatter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 57CE4A69309B269F00B96C4C /* DateFormatter.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -65,6 +66,7 @@
 		57CE4A453097692100B96C4C /* CreatedNewTrackerVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CreatedNewTrackerVC.swift; sourceTree = "<group>"; };
 		57CE4A493097819E00B96C4C /* TextFieldCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TextFieldCell.swift; sourceTree = "<group>"; };
 		57CE4A4B309781C400B96C4C /* SettingsCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsCell.swift; sourceTree = "<group>"; };
+		57CE4A69309B269F00B96C4C /* DateFormatter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DateFormatter.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFileSystemSynchronizedRootGroup section */
@@ -207,6 +209,7 @@
 		57CE4A423097668600B96C4C /* Helpers */ = {
 			isa = PBXGroup;
 			children = (
+				57CE4A69309B269F00B96C4C /* DateFormatter.swift */,
 				57CE4A433097668C00B96C4C /* ViewControllerSwitcher.swift */,
 			);
 			path = Helpers;
@@ -373,6 +376,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				57CE4A6A309B26A200B96C4C /* DateFormatter.swift in Sources */,
 				575CB87A308F9F8A00A0F024 /* AppDelegate.swift in Sources */,
 				575CB87B308F9F8A00A0F024 /* SceneDelegate.swift in Sources */,
 				57CE4A2B3096194900B96C4C /* Schedule.swift in Sources */,
