@@ -13,7 +13,7 @@ final class TrackersViewController: UIViewController {
     private let datePicker = UIDatePicker()
     private let datePickerMode = UIDatePicker.Mode.date
     private let datePickerPreferredStyle = UIDatePickerStyle.compact
-    private let datePickerBackgroundColor = UIColor(resource: .ypLightGray) //Unused
+    private let datePickerBackgroundColor = UIColor(resource: .datePickerBackground) //Unused
     
     private let titleLabel = UILabel()
     private let titleText = "Трекеры"
@@ -24,6 +24,7 @@ final class TrackersViewController: UIViewController {
     private let dateTextColor = UIColor(resource: .blackDay)
     
     private let searchField = UISearchTextField()
+    private let searchFieldBackgroundColor = UIColor(resource: .searchFieldBackground)
     private let searchFieldPlaceholder = "Поиск"
     private let searchFieldHeight = 36.0
     private let searchFieldFont = UIFont.systemFont(ofSize: 17, weight: .regular)
@@ -261,7 +262,7 @@ extension TrackersViewController {
         searchField.textColor = .blackDay
         searchField.leftView?.tintColor = .ypGray
         searchField.tintColor = .ypGray
-        searchField.backgroundColor = .ypLightGray
+        searchField.backgroundColor = searchFieldBackgroundColor
         searchField.translatesAutoresizingMaskIntoConstraints = false
         
         view.addSubview(searchField)

@@ -29,11 +29,11 @@ final class TabBarController: UITabBarController {
         let navC = UINavigationController(rootViewController: trackersVC)
         let statisticVC = StatisticViewController()
         
-        navC.tabBarItem = UITabBarItem(title: nil,
+        navC.tabBarItem = UITabBarItem(title: "Трекеры",
                                              image: trackersImage?.withTintColor(.ypGray).withRenderingMode(.alwaysOriginal),
                                              selectedImage: trackersImage)
         
-        statisticVC.tabBarItem = UITabBarItem(title: nil,
+        statisticVC.tabBarItem = UITabBarItem(title: "Статистика",
                                               image: statisticImage?.withTintColor(.ypGray).withRenderingMode(.alwaysOriginal),
                                               selectedImage: statisticImage)
 

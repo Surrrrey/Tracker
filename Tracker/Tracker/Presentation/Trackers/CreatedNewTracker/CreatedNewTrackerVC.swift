@@ -124,6 +124,9 @@ extension CreatedNewTrackerVC: UITableViewDataSource {
             if indexPath.row == 1 {
                 settingsCell.setPickedDaysText(with: formatSchedule(pickedSchedule))
             }
+            let isLastRow = indexPath.row == (tableView.numberOfRows(inSection: indexPath.section) - 1)
+            cell.separatorInset = isLastRow ? UIEdgeInsets(top: 0, left: 0, bottom: 0, right: .greatestFiniteMagnitude) : .zero
+            
             return settingsCell
         }
         return UITableViewCell()
@@ -215,7 +218,6 @@ extension CreatedNewTrackerVC {
     
     private func configMainTitle() {
         navigationItem.title = mainTitleText
-        
     }
     
     private func configTextFieldTableView() {

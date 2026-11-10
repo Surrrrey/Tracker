@@ -55,6 +55,9 @@ extension ScheduleSettingsViewController: UITableViewDataSource {
         
         guard let cell else { return UITableViewCell() }
         
+        let isLastRow = indexPath.row == (tableView.numberOfRows(inSection: indexPath.section) - 1)
+        cell.separatorInset = isLastRow ? UIEdgeInsets(top: 0, left: 0, bottom: 0, right: .greatestFiniteMagnitude) : .zero
+        
         if indexPath.row < 7 {
             let day = Weekday.allCases[indexPath.row]
             cell.configure(with: day, isSelected: pickedDays.contains(day)) { [weak self] isOn in
