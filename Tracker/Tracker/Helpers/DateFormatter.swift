@@ -13,5 +13,4 @@ final class Formatter  {
         formatter.locale = Locale(identifier: "ru_RU")
         return formatter
     }()
-
 }

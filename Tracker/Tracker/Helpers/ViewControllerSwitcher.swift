@@ -5,7 +5,7 @@ final class ViewControllerSwitcher {
     static let shared = ViewControllerSwitcher()
     private init() { }
     
-    func presentNavigationControllerForCreatedNewTracker(from: UIViewController, _ vc: UIViewController) {
+    func presentNavigationController(from: UIViewController, _ vc: UIViewController) {
         let navigController = UINavigationController(rootViewController: vc)
         
         navigController.navigationBar.isHidden = false

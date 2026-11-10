@@ -1,5 +1,11 @@
 import UIKit
 
+//MARK: - Delegate
+
+protocol TextFieldCellDelegate: AnyObject {
+    func textFieldCell(_ cell: TextFieldCell, didChangeText text: String)
+}
+
 final class TextFieldCell: UITableViewCell {
     
     //MARK: - Layout Properties
@@ -7,7 +13,7 @@ final class TextFieldCell: UITableViewCell {
     private let cornerRadius = 16.0
     private let background = UIColor(resource: .backgroundDay)
     
-    private let textField = UITextField()
+    let textField = UITextField()
     private let textFieldPlaceholder = "Введите название трекера"
     
     private let clearTextFieldButton = UIButton()
@@ -15,6 +21,8 @@ final class TextFieldCell: UITableViewCell {
     
     
     //MARK: - Properties
+    
+    weak var delegate: TextFieldCellDelegate?
     
     static let reuseIdentifier = "TextFieldCell"
     
@@ -28,6 +36,12 @@ final class TextFieldCell: UITableViewCell {
     
     required init?(coder: NSCoder) {
         nil
+    }
+    
+    //MARK: - Private Methods
+    
+    @objc private func textFieldDidChange(_ textField: UITextField) {
+        delegate?.textFieldCell(self, didChangeText: textField.text ?? "")
     }
 }
 
@@ -49,6 +63,8 @@ extension TextFieldCell {
         textField.clearButtonMode = .whileEditing
         textField.placeholder = textFieldPlaceholder
         
+        textField.addTarget(self, action: #selector(textFieldDidChange(_:)), for: .editingChanged)
+        
         textField.translatesAutoresizingMaskIntoConstraints = false
         
         contentView.addSubview(textField)
@@ -59,9 +75,5 @@ extension TextFieldCell {
             textField.leadingAnchor.constraint(equalTo: contentView.leadingAnchor, constant: 16),
             textField.trailingAnchor.constraint(equalTo: contentView.trailingAnchor, constant: -10)
         ])
-    }
-    
-    private func showTextFieldButton() {
-        
     }
 }

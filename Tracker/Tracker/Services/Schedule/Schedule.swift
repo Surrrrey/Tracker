@@ -4,7 +4,6 @@ enum Schedule {
     case none
     case daily
     case weekly(days: Set<Weekday>)
-    case everyNDay(interval: Int)
 }
 
 enum Weekday: Int, CaseIterable {
@@ -30,6 +29,18 @@ enum Weekday: Int, CaseIterable {
     
     var displayName: String {
         switch self {
+        case .monday: return "Понедельник"
+        case .tuesday: return "Вторник"
+        case .wednesday: return "Среда"
+        case .thursday: return "Четверг"
+        case .friday: return "Пятница"
+        case .saturday: return "Суббота"
+        case .sunday: return "Воскресенье"
+        }
+    }
+    
+    var displayShortName: String {
+        switch self {
         case .monday: return "Пн"
         case .tuesday: return "Вт"
         case .wednesday: return "Ср"
@@ -38,5 +49,13 @@ enum Weekday: Int, CaseIterable {
         case .saturday: return "Сб"
         case .sunday: return "Вс"
         }
+    }
+}
+
+extension Weekday {
+    static func current(from date: Date) -> Weekday? {
+        let number = Calendar.current.component(.weekday, from: date)
+        
+        return Weekday(rawValue: (number + 5) % 7)
     }
 }

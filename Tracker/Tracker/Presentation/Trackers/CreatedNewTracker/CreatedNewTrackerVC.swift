@@ -23,12 +23,26 @@ final class CreatedNewTrackerVC: UIViewController {
     private let borderWidth = 1.0
     
     private let createButton = UIButton()
-    private let createButtonColor = UIColor(resource: .whiteDay)
+    private let createButtonTextColor = UIColor(resource: .whiteDay)
+    private let createButtonActiveColor = UIColor(resource: .blackDay)
     private let createButtonDisabledColor = UIColor(resource: .ypGray)
 
-    
     //MARK: - Properties
     
+    var pickedSchedule: Schedule = .none
+    
+    private let colorsSection: [UIColor] = [.colorSelection1, .colorSelection2, .colorSelection3,
+                                            .colorSelection4, .colorSelection5, .colorSelection6,
+                                            .colorSelection7, .colorSelection8, .colorSelection9,
+                                            .colorSelection10, .colorSelection11, .colorSelection12,
+                                            .colorSelection13, .colorSelection14, .colorSelection15,
+                                            .colorSelection16, .colorSelection17, .colorSelection18
+    ]
+    
+    private let emojis = ["🐶", "🐱", "🐰", "🦊", "🐼", "🐻", "🐸", "🦉", "🚀", "⚽️", "📚", "🍳"]
+    
+    var onTrackerCreated: ((TrackerCategory) -> Void)?
+
     //MARK: - Lifecycle
     
     override func viewDidLoad() {
@@ -41,7 +55,45 @@ final class CreatedNewTrackerVC: UIViewController {
     
     //MARK: - Private Methods
     
+    private func formatSchedule(_ schedule: Schedule) -> String {
+        switch schedule {
+        case .none:
+            return ""
+        case .daily:
+            return "Каждый день"
+        case .weekly(let days):
+            guard !days.isEmpty else {
+                return ""
+            }
+            let shortNames = days.sorted { $0.rawValue < $1.rawValue }.map { $0.displayShortName }
+            return shortNames.joined(separator: ", ")
+        }
+    }
+    
+    private func currentTrackerName() -> String {
+        guard let cell = textFieldTableView.cellForRow(at: IndexPath(row: 0, section: 0)) as? TextFieldCell,
+              let text = cell.textField.text
+        else { return "" }
+        return text
+    }
+    
+    private func createTracker() {
+        let name = currentTrackerName()
+        
+        let tracker = Tracker(id: UUID(),
+                              name: name,
+                              color: colorsSection.randomElement() ?? .colorSelection1,
+                              emoji: emojis.randomElement() ?? "🐱",
+                              schedule: pickedSchedule)
+        
+        let category = TrackerCategory(category: Categories(category: "Заглушка"), trackers: [tracker])
+        
+        onTrackerCreated?(category)
+        dismiss(animated: true)
+    }
 }
+
+//MARK: - Data Source
 
 extension CreatedNewTrackerVC: UITableViewDataSource {
     
@@ -60,6 +112,8 @@ extension CreatedNewTrackerVC: UITableViewDataSource {
             
             guard let textFieldCell = cell as? TextFieldCell else { return UITableViewCell() }
             
+            textFieldCell.delegate = self
+            
             return textFieldCell
         } else if tableView == settingsTableView {
             let cell = tableView.dequeueReusableCell(withIdentifier: SettingsCell.reuseIdentifier, for: indexPath)
@@ -67,17 +121,82 @@ extension CreatedNewTrackerVC: UITableViewDataSource {
             guard let settingsCell = cell as? SettingsCell else { return UITableViewCell() }
             
             settingsCell.setText(with: indexPath)
-            
+            if indexPath.row == 1 {
+                settingsCell.setPickedDaysText(with: formatSchedule(pickedSchedule))
+            }
             return settingsCell
         }
         return UITableViewCell()
     }
 }
 
+//MARK: - Delegate
+
 extension CreatedNewTrackerVC: UITableViewDelegate {
     
     func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
         tableViewCellHeight
+    }
+    
+    func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        if indexPath.row == 0 {
+            //TODO: Category
+        }
+        if indexPath.row == 1 {
+            let scheduleVC = ScheduleSettingsViewController()
+            
+            if case let .weekly(days) = pickedSchedule {
+                scheduleVC.currentDays = days
+            }
+            if case .daily = pickedSchedule {
+                scheduleVC.currentDays.insert(Weekday.monday)
+                scheduleVC.currentDays.insert(Weekday.tuesday)
+                scheduleVC.currentDays.insert(Weekday.wednesday)
+                scheduleVC.currentDays.insert(Weekday.thursday)
+                scheduleVC.currentDays.insert(Weekday.friday)
+                scheduleVC.currentDays.insert(Weekday.saturday)
+                scheduleVC.currentDays.insert(Weekday.sunday)
+            }
+            
+            scheduleVC.onSchedulePicked = { [weak self] schedule in
+                self?.pickedSchedule = schedule
+                self?.updateCreateButtonState()
+                self?.settingsTableView.reloadData()
+            }
+            ViewControllerSwitcher.shared.presentNavigationController(from: self, scheduleVC)
+        }
+    }
+}
+
+//MARK: - Text Field Delegate
+
+extension CreatedNewTrackerVC: TextFieldCellDelegate {
+    func textFieldCell(_ cell: TextFieldCell, didChangeText text: String) {
+            updateCreateButtonState()
+    }
+    
+    private func updateCreateButtonState() {
+        let name = currentTrackerName()
+        let hasName = !name.trimmingCharacters(in: .whitespaces).isEmpty
+        
+        var hasSchedule = false
+        
+        switch pickedSchedule {
+        case.none:
+            hasSchedule = false
+        case .daily:
+            hasSchedule = true
+        case .weekly:
+            hasSchedule = true
+        }
+        
+        if hasName && hasSchedule {
+            createButton.isEnabled = true
+            createButton.backgroundColor = createButtonActiveColor
+        } else {
+            createButton.isEnabled = false
+            createButton.backgroundColor = createButtonDisabledColor
+        }
     }
 }
 
@@ -177,16 +296,25 @@ extension CreatedNewTrackerVC {
         cancelButton.layer.borderWidth = borderWidth
         
         cancelButton.translatesAutoresizingMaskIntoConstraints = false
+        
+        cancelButton.addAction(UIAction { [weak self] _ in
+            self?.dismiss(animated: true)
+        }, for: .touchUpInside)
     }
     
     private func configCreateButton() {
-        createButton.isEnabled = false
         createButton.setTitle("Создать", for: .normal)
-        createButton.setTitleColor(createButtonColor, for: .normal)
+        createButton.setTitleColor(createButtonTextColor, for: .normal)
+        createButton.backgroundColor = createButtonDisabledColor
+        createButton.isEnabled = false
         createButton.layer.cornerRadius = cornerRadius
         createButton.layer.masksToBounds = true
-        createButton.backgroundColor = createButtonDisabledColor
         
         createButton.translatesAutoresizingMaskIntoConstraints = false
+        
+        createButton.addAction(UIAction { [weak self] _ in
+            guard let self else { return }
+            self.createTracker()
+        }, for: .touchUpInside)
     }
 }

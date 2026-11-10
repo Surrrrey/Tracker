@@ -13,6 +13,10 @@ final class SettingsCell: UITableViewCell {
     private let firstSettingsCategory = "Категория"
     private let secondSettingsCategory = "Расписание"
     
+    private let pickedOptionsLabel = UILabel()
+    private let pickedOptionsLabelTextFont = UIFont.systemFont(ofSize: 17, weight: .regular)
+    private let pickedOptionsLabelTextColor = UIColor(resource: .ypGray)
+    
     private let continueImageView = UIImageView()
     private let continueImage = UIImage(systemName: "chevron.right")
     private let continueImageColor = UIColor(resource: .ypGray)
@@ -34,6 +38,12 @@ final class SettingsCell: UITableViewCell {
         nil
     }
     
+    override func prepareForReuse() {
+        super.prepareForReuse()
+        
+        
+    }
+    
     func setText(with indexPath: IndexPath) {
         if indexPath.row == 0 {
             text.text = firstSettingsCategory
@@ -41,6 +51,10 @@ final class SettingsCell: UITableViewCell {
         if indexPath.row == 1 {
             text.text = secondSettingsCategory
         }
+    }
+    
+    func setPickedDaysText(with text: String) {
+        pickedOptionsLabel.text = text
     }
 }
 
@@ -55,6 +69,7 @@ extension SettingsCell {
         
         configContinueImage()
         configTextLabel()
+        configPickedOptionsLabel()
     }
         
     private func configTextLabel() {
@@ -66,10 +81,33 @@ extension SettingsCell {
         
         contentView.addSubview(text)
         
+        if pickedOptionsLabel.text == "" {
+            NSLayoutConstraint.activate([
+                text.centerYAnchor.constraint(equalTo: contentView.centerYAnchor),
+                text.leadingAnchor.constraint(equalTo: contentView.leadingAnchor, constant: 16),
+                text.trailingAnchor.constraint(equalTo: continueImageView.leadingAnchor, constant: -1)
+            ]) } else {
+                NSLayoutConstraint.activate([
+                    text.topAnchor.constraint(equalTo: contentView.topAnchor, constant: 15),
+                    text.leadingAnchor.constraint(equalTo: contentView.leadingAnchor, constant: 16),
+                    text.trailingAnchor.constraint(equalTo: continueImageView.leadingAnchor, constant: -1)
+                ])
+            }
+    }
+    
+    private func configPickedOptionsLabel() {
+        pickedOptionsLabel.textColor = pickedOptionsLabelTextColor
+        pickedOptionsLabel.font = pickedOptionsLabelTextFont
+        
+        pickedOptionsLabel.translatesAutoresizingMaskIntoConstraints = false
+        
+        contentView.addSubview(pickedOptionsLabel)
+        
         NSLayoutConstraint.activate([
-            text.centerYAnchor.constraint(equalTo: contentView.centerYAnchor),
-            text.leadingAnchor.constraint(equalTo: contentView.leadingAnchor, constant: 16),
-            text.trailingAnchor.constraint(equalTo: continueImageView.leadingAnchor, constant: -1)
+            pickedOptionsLabel.topAnchor.constraint(equalTo: text.bottomAnchor, constant: 2),
+            pickedOptionsLabel.leadingAnchor.constraint(equalTo: text.leadingAnchor),
+            pickedOptionsLabel.trailingAnchor.constraint(equalTo: text.trailingAnchor),
+            pickedOptionsLabel.bottomAnchor.constraint(equalTo: contentView.bottomAnchor, constant: -14)
         ])
     }
     

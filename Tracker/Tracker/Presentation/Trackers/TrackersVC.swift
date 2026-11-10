@@ -13,7 +13,7 @@ final class TrackersViewController: UIViewController {
     private let datePicker = UIDatePicker()
     private let datePickerMode = UIDatePicker.Mode.date
     private let datePickerPreferredStyle = UIDatePickerStyle.compact
-    private let datePickerBackgroundColor = UIColor(resource: .ypLightGray)
+    private let datePickerBackgroundColor = UIColor(resource: .ypLightGray) //Unused
     
     private let titleLabel = UILabel()
     private let titleText = "Трекеры"
@@ -23,12 +23,14 @@ final class TrackersViewController: UIViewController {
     private let dateFont = UIFont.systemFont(ofSize: 17, weight: .regular)
     private let dateTextColor = UIColor(resource: .blackDay)
     
-    private let dateBackgroundView = UIImageView()
-    
     private let searchField = UISearchTextField()
     private let searchFieldPlaceholder = "Поиск"
     private let searchFieldHeight = 36.0
     private let searchFieldFont = UIFont.systemFont(ofSize: 17, weight: .regular)
+    
+    private let trackersCollectionView = UICollectionView(frame: .zero, collectionViewLayout: UICollectionViewFlowLayout())
+    private let minimumInteritemSpacingForSection = 9.0
+    private let cellHeight = 148.0
     
     private var emptyTrackersImageView = UIImageView()
     private let emptyTrackersImage = UIImage(resource: .dizzy)
@@ -45,12 +47,28 @@ final class TrackersViewController: UIViewController {
     private var categories: [TrackerCategory] = []
     
     private var completedTrackers: [TrackerRecord] = []
+    
+    private var currentDay = Date() {
+        didSet {
+            reloadContent()
+        }
+    }
+    
+    private var visibleTrackers: [Tracker] {
+        categories
+            .flatMap { $0.trackers }
+            .filter { $0.isScheduled(on: currentDay) }
+    }
+    
     //MARK: - Lifecycle
     
     override func viewDidLoad() {
         super.viewDidLoad()
         
         configViews()
+        
+        addDatePikerTarget()
+        reloadContent()
     }
     
     //MARK: - Public Methods
@@ -60,19 +78,117 @@ final class TrackersViewController: UIViewController {
     private func addNewTaskButtonDidTap() {
         let createdNewTrackerVC = CreatedNewTrackerVC()
         
-        ViewControllerSwitcher.shared.presentNavigationControllerForCreatedNewTracker(from: self, createdNewTrackerVC)
+        createdNewTrackerVC.onTrackerCreated = { [weak self] category in
+            self?.categories.append(category)
+            self?.reloadContent()
+        }
+        
+        ViewControllerSwitcher.shared.presentNavigationController(from: self, createdNewTrackerVC)
     }
     
-    
-    private func trackerCompletedButtonDidTap(for tracker: Tracker) {
-        // TODO:
-        if let index = self.completedTrackers.firstIndex(where: { $0.TrackerId == tracker.id }) {
-            completedTrackers.remove(at: index)
+    private func reloadContent() {
+        let isEmpty = visibleTrackers.isEmpty
+        
+        if isEmpty {
+            trackersCollectionView.removeFromSuperview()
+            if emptyTrackersImageView.superview == nil {
+                configEmptyImage()
+                configEmptyLabel()
+            }
         } else {
-            completedTrackers.append(TrackerRecord(TrackerId: tracker.id, date: Date()))
+            emptyTrackersImageView.removeFromSuperview()
+            emptyTrackersLabel.removeFromSuperview()
+            configCollectionView()
+            trackersCollectionView.reloadData()
+        }
+        
+    }
+    
+    private func isTrackerCompleted(_ tracker: Tracker) -> Bool {
+        completedTrackers.contains { record in
+            record.TrackerId == tracker.id && Calendar.current.isDate(record.date, inSameDayAs: currentDay)
         }
     }
+    
+    private func isFutureDaySelected() -> Bool {
+        Calendar.current.startOfDay(for: currentDay) >
+        Calendar.current.startOfDay(for: Date())
+    }
+    
+    private func trackerCompletedButtonDidTap(for tracker: Tracker) {
+        guard !isFutureDaySelected() else { return } // TODO: - Можно показать ошибку с информацией о том что выбран день из будущего либо изменить фон кнопки на неактивный
+        
+        if let index = completedTrackers.firstIndex(where: {
+            $0.TrackerId == tracker.id &&
+            Calendar.current.isDate($0.date, inSameDayAs: currentDay)
+        }) {
+            completedTrackers.remove(at: index)
+        } else {
+            completedTrackers.append(TrackerRecord(TrackerId: tracker.id, date: currentDay))
+        }
+        trackersCollectionView.reloadData()
+    }
+    
+    private func addDatePikerTarget() {
+        datePicker.addTarget(self, action: #selector(datePickerValueChanged(_:)), for: .valueChanged)
+    }
+    
+    @objc private func datePickerValueChanged(_ sender: UIDatePicker) {
+        currentDay = Calendar.current.startOfDay(for: sender.date)
+    }
 }
+
+//MARK: - Data Source
+
+extension TrackersViewController: UICollectionViewDataSource {
+    func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
+        visibleTrackers.count
+    }
+    
+    func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
+        let cell = collectionView.dequeueReusableCell(withReuseIdentifier: TrackerCell.reuseIdentifier, for: indexPath) as? TrackerCell
+
+        guard let cell else { return UICollectionViewCell(frame: .zero)}
+        
+        let tracker = visibleTrackers[indexPath.item]
+
+        cell.tracker = tracker
+        cell.isCompleted = isTrackerCompleted(tracker)
+        cell.completedDays = Set(
+            completedTrackers.filter { $0.TrackerId == tracker.id }
+                .map { Calendar.current.startOfDay(for: $0.date) }).count
+        
+        if isFutureDaySelected() {
+            cell.isCompleted = false
+            cell.isUserInteractionEnabled = false
+        } else {
+            cell.isUserInteractionEnabled = true
+        }
+        
+        cell.onToggle = { [weak self] in
+            self?.trackerCompletedButtonDidTap(for: tracker)
+        }
+        
+        return cell
+    }
+}
+
+//MARK: - Delegate Flow
+
+extension TrackersViewController: UICollectionViewDelegateFlowLayout {
+    func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
+        CGSize(width: collectionView.bounds.width / 2 - (minimumInteritemSpacingForSection / 2), height: cellHeight)
+    }
+    
+    func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, minimumInteritemSpacingForSectionAt section: Int) -> CGFloat {
+        minimumInteritemSpacingForSection
+    }
+    
+    func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, insetForSectionAt section: Int) -> UIEdgeInsets {
+        UIEdgeInsets(top: 0, left: 0, bottom: 0, right: 0)
+    }
+}
+
 
 //MARK: - Layout
 
@@ -84,10 +200,6 @@ extension TrackersViewController {
         configNavigationBar()
         configTitleLabel()
         configSearchField()
-        
-        guard categories.isEmpty else { return }
-        configEmptyImage()
-        configEmptyLabel()
     }
     
     private func configNavigationBar() {
@@ -98,6 +210,7 @@ extension TrackersViewController {
         
         navigationItem.rightBarButtonItem = UIBarButtonItem(customView: datePicker)
         navigationItem.leftBarButtonItem = UIBarButtonItem(customView: addNewTaskButton)
+        
         if #available(iOS 26.0, *) {
             navigationItem.leftBarButtonItem?.hidesSharedBackground = true
             navigationItem.rightBarButtonItem?.hidesSharedBackground = true
@@ -159,6 +272,37 @@ extension TrackersViewController {
             searchField.heightAnchor.constraint(equalToConstant: searchFieldHeight),
             searchField.topAnchor.constraint(equalTo: titleLabel.bottomAnchor, constant: 7)
         ])
+    }
+    
+    private func configCollectionView() {
+        setDelegate()
+        setDataSource()
+        registerCell()
+        
+        trackersCollectionView.allowsMultipleSelection = false
+        
+        trackersCollectionView.translatesAutoresizingMaskIntoConstraints = false
+        
+        view.addSubview(trackersCollectionView)
+        
+        NSLayoutConstraint.activate([
+            trackersCollectionView.topAnchor.constraint(equalTo: searchField.bottomAnchor, constant: 34),
+            trackersCollectionView.leadingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.leadingAnchor, constant: 16),
+            trackersCollectionView.trailingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.trailingAnchor, constant: -16),
+            trackersCollectionView.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor, constant: 0)
+        ])
+    }
+    
+    private func setDelegate() {
+        trackersCollectionView.delegate = self
+    }
+    
+    private func setDataSource() {
+        trackersCollectionView.dataSource = self
+    }
+    
+    private func registerCell() {
+        trackersCollectionView.register(TrackerCell.self, forCellWithReuseIdentifier: TrackerCell.reuseIdentifier)
     }
     
     private func configEmptyImage() {

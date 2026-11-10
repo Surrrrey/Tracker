@@ -1,3 +1,3 @@
-struct Category {
+struct Categories {
     let category: String
 }

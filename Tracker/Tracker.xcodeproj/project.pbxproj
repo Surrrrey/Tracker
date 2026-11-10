@@ -25,6 +25,10 @@
 		57CE4A4A309781C000B96C4C /* TextFieldCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 57CE4A493097819E00B96C4C /* TextFieldCell.swift */; };
 		57CE4A4C3097823400B96C4C /* SettingsCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 57CE4A4B309781C400B96C4C /* SettingsCell.swift */; };
 		57CE4A6A309B26A200B96C4C /* DateFormatter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 57CE4A69309B269F00B96C4C /* DateFormatter.swift */; };
+		57CE4A8D309B4E8200B96C4C /* TrackerCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 57CE4A8C309B4E7B00B96C4C /* TrackerCell.swift */; };
+		57CE4A8F309C4D9600B96C4C /* TrackerCellHeader.swift in Sources */ = {isa = PBXBuildFile; fileRef = 57CE4A8E309C4D8E00B96C4C /* TrackerCellHeader.swift */; };
+		57CE4A91309D941100B96C4C /* ScheduleSettingsVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 57CE4A90309D93F400B96C4C /* ScheduleSettingsVC.swift */; };
+		57CE4A93309D9DEC00B96C4C /* SchedulePickerCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 57CE4A92309D9DCD00B96C4C /* SchedulePickerCell.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -67,6 +71,10 @@
 		57CE4A493097819E00B96C4C /* TextFieldCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TextFieldCell.swift; sourceTree = "<group>"; };
 		57CE4A4B309781C400B96C4C /* SettingsCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsCell.swift; sourceTree = "<group>"; };
 		57CE4A69309B269F00B96C4C /* DateFormatter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DateFormatter.swift; sourceTree = "<group>"; };
+		57CE4A8C309B4E7B00B96C4C /* TrackerCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TrackerCell.swift; sourceTree = "<group>"; };
+		57CE4A8E309C4D8E00B96C4C /* TrackerCellHeader.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TrackerCellHeader.swift; sourceTree = "<group>"; };
+		57CE4A90309D93F400B96C4C /* ScheduleSettingsVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ScheduleSettingsVC.swift; sourceTree = "<group>"; };
+		57CE4A92309D9DCD00B96C4C /* SchedulePickerCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SchedulePickerCell.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFileSystemSynchronizedRootGroup section */
@@ -146,7 +154,6 @@
 		575CB87E308FAC5900A0F024 /* Presentation */ = {
 			isa = PBXGroup;
 			children = (
-				57CE4A473097814C00B96C4C /* CreatedNewTracker */,
 				575CB87F308FAC6300A0F024 /* TabBar */,
 				575CB88C308FB07A00A0F024 /* Trackers */,
 				575CB88D308FB08800A0F024 /* Statistic */,
@@ -166,6 +173,8 @@
 			isa = PBXGroup;
 			children = (
 				575CB873308F9F8A00A0F024 /* TrackersVC.swift */,
+				57CE4A8B309B4E6A00B96C4C /* TrackersCollectionViewCell */,
+				57CE4A473097814C00B96C4C /* CreatedNewTracker */,
 			);
 			path = Trackers;
 			sourceTree = "<group>";
@@ -218,6 +227,7 @@
 		57CE4A473097814C00B96C4C /* CreatedNewTracker */ = {
 			isa = PBXGroup;
 			children = (
+				57CE4A90309D93F400B96C4C /* ScheduleSettingsVC.swift */,
 				57CE4A453097692100B96C4C /* CreatedNewTrackerVC.swift */,
 				57CE4A483097816E00B96C4C /* TableViewCells */,
 			);
@@ -227,10 +237,20 @@
 		57CE4A483097816E00B96C4C /* TableViewCells */ = {
 			isa = PBXGroup;
 			children = (
+				57CE4A92309D9DCD00B96C4C /* SchedulePickerCell.swift */,
 				57CE4A493097819E00B96C4C /* TextFieldCell.swift */,
 				57CE4A4B309781C400B96C4C /* SettingsCell.swift */,
 			);
 			path = TableViewCells;
+			sourceTree = "<group>";
+		};
+		57CE4A8B309B4E6A00B96C4C /* TrackersCollectionViewCell */ = {
+			isa = PBXGroup;
+			children = (
+				57CE4A8E309C4D8E00B96C4C /* TrackerCellHeader.swift */,
+				57CE4A8C309B4E7B00B96C4C /* TrackerCell.swift */,
+			);
+			path = TrackersCollectionViewCell;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -378,15 +398,19 @@
 			files = (
 				57CE4A6A309B26A200B96C4C /* DateFormatter.swift in Sources */,
 				575CB87A308F9F8A00A0F024 /* AppDelegate.swift in Sources */,
+				57CE4A8D309B4E8200B96C4C /* TrackerCell.swift in Sources */,
 				575CB87B308F9F8A00A0F024 /* SceneDelegate.swift in Sources */,
+				57CE4A8F309C4D9600B96C4C /* TrackerCellHeader.swift in Sources */,
 				57CE4A2B3096194900B96C4C /* Schedule.swift in Sources */,
 				57CE4A1B3096169100B96C4C /* TrackerCategory.swift in Sources */,
 				575CB87C308F9F8A00A0F024 /* Tracker.xcdatamodeld in Sources */,
 				57CE4A4A309781C000B96C4C /* TextFieldCell.swift in Sources */,
 				57CE4A463097693700B96C4C /* CreatedNewTrackerVC.swift in Sources */,
+				57CE4A93309D9DEC00B96C4C /* SchedulePickerCell.swift in Sources */,
 				575CB88F308FB09F00A0F024 /* StatisticVC.swift in Sources */,
 				57CE4A373097639D00B96C4C /* Category.swift in Sources */,
 				57CE4A443097669100B96C4C /* ViewControllerSwitcher.swift in Sources */,
+				57CE4A91309D941100B96C4C /* ScheduleSettingsVC.swift in Sources */,
 				57CE4A1D3096169900B96C4C /* TrackerRecord.swift in Sources */,
 				575CB88B308FAD4900A0F024 /* TabBarController.swift in Sources */,
 				575CB87D308F9F8A00A0F024 /* TrackersVC.swift in Sources */,
