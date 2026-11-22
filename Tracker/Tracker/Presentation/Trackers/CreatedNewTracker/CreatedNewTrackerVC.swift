@@ -103,7 +103,7 @@ final class CreatedNewTrackerVC: UIViewController {
                               emoji: pickedEmoji ?? "🐱",
                               schedule: pickedSchedule)
         
-        let category = TrackerCategory(category: Categories(category: "Заглушка"), trackers: [tracker])
+        let category = TrackerCategory(category: "Заглушка", trackers: [tracker])
         
         onTrackerCreated?(category)
         dismiss(animated: true)

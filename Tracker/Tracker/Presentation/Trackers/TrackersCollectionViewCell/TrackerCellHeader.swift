@@ -23,7 +23,7 @@ final class TrackerCellHeader: UICollectionReusableView { //TODO: - Реализ
     private func configTitleLabel(with category: TrackerCategory?) {
         guard let category else { return }
         
-        titleLabel.text = category.category.category // Поправить
+        titleLabel.text = category.category // Поправить
         titleLabel.font = titleFont
         titleLabel.textColor = titleColor
         

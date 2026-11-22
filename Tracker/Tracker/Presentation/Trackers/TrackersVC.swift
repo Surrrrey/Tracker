@@ -61,12 +61,22 @@ final class TrackersViewController: UIViewController {
             .filter { $0.isScheduled(on: currentDay) }
     }
     
+    private let trackerStore = TrackerStore()
+    private let categoryStore = TrackerCategoryStore()
+    private let recordStore = TrackerRecordStore()
+    
     //MARK: - Lifecycle
     
     override func viewDidLoad() {
         super.viewDidLoad()
         
         configViews()
+        
+        trackerStore.onTrackersChanged = { [weak self] in self?.reloadContent()}
+        categoryStore.onCategoriesChanged = { [weak self] in self?.reloadContent()}
+        recordStore.onRecordsChanged = { [weak self] in self?.reloadContent()}
+        
+        storesPerformFetch()
         
         addDatePikerTarget()
         reloadContent()
@@ -76,18 +86,35 @@ final class TrackersViewController: UIViewController {
     
     //MARK: - Private Methods
     
+    private func storesPerformFetch() {
+        try? trackerStore.performFetch()
+        try? categoryStore.performFetch()
+        try? recordStore.performFetch()
+    }
+    
     private func addNewTaskButtonDidTap() {
         let createdNewTrackerVC = CreatedNewTrackerVC()
         
         createdNewTrackerVC.onTrackerCreated = { [weak self] category in
-            self?.categories.append(category)
-            self?.reloadContent()
+            guard let self else { return }
+            
+            do {
+                for tracker in category.trackers {
+                    try self.trackerStore.addNewTracker(tracker)
+                }
+                try self.categoryStore.addNewTrackerCategory(category)
+            } catch {
+                print("Save failed:", error)
+            }
         }
         
         ViewControllerSwitcher.shared.presentNavigationController(from: self, createdNewTrackerVC)
     }
     
     private func reloadContent() {
+        categories = categoryStore.categories
+        completedTrackers = recordStore.records
+        
         let isEmpty = visibleTrackers.isEmpty
         
         if isEmpty {
@@ -107,7 +134,7 @@ final class TrackersViewController: UIViewController {
     
     private func isTrackerCompleted(_ tracker: Tracker) -> Bool {
         completedTrackers.contains { record in
-            record.TrackerId == tracker.id && Calendar.current.isDate(record.date, inSameDayAs: currentDay)
+            record.trackerId == tracker.id && Calendar.current.isDate(record.date, inSameDayAs: currentDay)
         }
     }
     
@@ -120,12 +147,12 @@ final class TrackersViewController: UIViewController {
         guard !isFutureDaySelected() else { return } // TODO: - Можно показать ошибку с информацией о том что выбран день из будущего либо изменить фон кнопки на неактивный
         
         if let index = completedTrackers.firstIndex(where: {
-            $0.TrackerId == tracker.id &&
+            $0.trackerId == tracker.id &&
             Calendar.current.isDate($0.date, inSameDayAs: currentDay)
         }) {
-            completedTrackers.remove(at: index)
+            try? recordStore.deleteTrackerRecord(completedTrackers[index])
         } else {
-            completedTrackers.append(TrackerRecord(TrackerId: tracker.id, date: currentDay))
+            try? recordStore.addNewTrackerRecord(TrackerRecord(trackerId: tracker.id, date: currentDay))
         }
         trackersCollectionView.reloadData()
     }
@@ -156,7 +183,7 @@ extension TrackersViewController: UICollectionViewDataSource {
         cell.tracker = tracker
         cell.isCompleted = isTrackerCompleted(tracker)
         cell.completedDays = Set(
-            completedTrackers.filter { $0.TrackerId == tracker.id }
+            completedTrackers.filter { $0.trackerId == tracker.id }
                 .map { Calendar.current.startOfDay(for: $0.date) }).count
         
         if isFutureDaySelected() {
