@@ -6,7 +6,7 @@ enum Schedule {
     case weekly(days: Set<Weekday>)
 }
 
-enum Weekday: Int, CaseIterable {
+enum Weekday: Int, CaseIterable, Codable {
     case monday
     case tuesday
     case wednesday

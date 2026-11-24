@@ -37,13 +37,7 @@ final class SettingsCell: UITableViewCell {
     required init?(coder: NSCoder) {
         nil
     }
-    
-    override func prepareForReuse() {
-        super.prepareForReuse()
         
-        
-    }
-    
     func setText(with indexPath: IndexPath) {
         if indexPath.row == 0 {
             text.text = firstSettingsCategory
